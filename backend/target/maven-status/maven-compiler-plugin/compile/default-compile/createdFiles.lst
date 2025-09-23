@@ -1,0 +1,10 @@
+com\example\recipeapp\entity\User.class
+com\example\recipeapp\controller\AuthController.class
+com\example\recipeapp\service\RecipeService.class
+com\example\recipeapp\service\UserService.class
+com\example\recipeapp\entity\Recipe.class
+com\example\recipeapp\repository\UserRepository.class
+com\example\recipeapp\controller\RecipeController.class
+com\example\recipeapp\dto\UserDTO.class
+com\example\recipeapp\repository\RecipeRepository.class
+com\example\recipeapp\RecipeAppBackendApplication.class
