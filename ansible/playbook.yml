@@ -1,0 +1,28 @@
+- name: Deploy app to Kubernetes
+  hosts: localhost
+  tasks:
+    - name: Apply MySQL secret
+      command: kubectl apply -f ../k8s/mysql-secret.yaml
+
+    - name: Apply MySQL deployment
+      command: kubectl apply -f ../k8s/mysql-deployment.yaml
+
+    - name: Apply backend configmap
+      command: kubectl apply -f ../k8s/backend-configmap.yaml
+
+    - name: Apply backend deployment
+      command: kubectl apply -f ../k8s/backend-deployment.yaml
+
+    - name: Apply frontend configmap
+      command: kubectl apply -f ../k8s/frontend-configmap.yaml
+
+    - name: Apply frontend deployment
+      command: kubectl apply -f ../k8s/frontend-deployment.yaml
+
+    - name: Get service URL
+      command: minikube service frontend-service --url
+      register: service_url
+
+    - name: Display service URL
+      debug:
+        msg: "App deployed at {{ service_url.stdout }}"

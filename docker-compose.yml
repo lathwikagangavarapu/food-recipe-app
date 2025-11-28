@@ -1,0 +1,45 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: lat-frontend
+    ports:
+      - "3000:80"   # nginx listens on 80 inside container
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: lat-backend
+    ports:
+      - "8080:8080"   # change if your backend runs on a different port
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/recipe_app
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SERVER_PORT=8080
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: lat-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: recipe_app
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysql", "-u", "root", "--password=root", "recipe_app", "-e", "SELECT 1"]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  db_data:
